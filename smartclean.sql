@@ -46,3 +46,4 @@ INSERT INTO services (name, description, price, duration_days) VALUES
 ('Repaint', 'Pengecatan ulang sepatu dengan cat khusus sepatu. Tersedia berbagai pilihan warna.', 120000, 7),
 ('Unyellowing', 'Menghilangkan kekuningan pada sol sepatu. Membuat sol kembali putih bersih.', 55000, 3),
 ('Hydran / Suede Care', 'Perawatan khusus untuk material suede dan nubuck menggunakan produk premium.', 65000, 4);
+
