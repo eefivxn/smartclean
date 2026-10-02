@@ -4,8 +4,14 @@ requireAdmin();
 require_once '../config/database.php';
 
 $success = $error = '';
-if (isset($_SESSION['ord_success'])) { $success = $_SESSION['ord_success']; unset($_SESSION['ord_success']); }
-if (isset($_SESSION['ord_error']))   { $error   = $_SESSION['ord_error'];   unset($_SESSION['ord_error']); }
+if (isset($_SESSION['ord_success'])) {
+    $success = $_SESSION['ord_success'];
+    unset($_SESSION['ord_success']);
+}
+if (isset($_SESSION['ord_error'])) {
+    $error   = $_SESSION['ord_error'];
+    unset($_SESSION['ord_error']);
+}
 
 $filter = $_GET['status'] ?? '';
 $allowed_filters = ['menunggu','diproses','selesai','dibatalkan'];
@@ -86,21 +92,21 @@ $map = [
             <p>Pantau dan perbarui status semua pesanan masuk</p>
         </div>
 
-        <?php if ($success): ?>
+        <?php if ($success) : ?>
         <div class="alert alert-success">✅ <?= htmlspecialchars($success) ?></div>
         <?php endif; ?>
 
-        <?php if ($error): ?>
+        <?php if ($error) : ?>
         <div class="alert alert-danger">⚠️ <?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
         <!-- FILTER -->
         <div class="d-flex gap-1 mb-3" style="flex-wrap:wrap">
             <a href="orders.php" class="btn btn-sm <?= !$filter ? 'btn-primary' : 'btn-outline' ?>">📋 Semua</a>
-            <a href="orders.php?status=menunggu" class="btn btn-sm <?= $filter==='menunggu' ? 'btn-primary' : 'btn-outline' ?>">⏳ Menunggu</a>
-            <a href="orders.php?status=diproses" class="btn btn-sm <?= $filter==='diproses' ? 'btn-primary' : 'btn-outline' ?>">⚙️ Diproses</a>
-            <a href="orders.php?status=selesai" class="btn btn-sm <?= $filter==='selesai' ? 'btn-primary' : 'btn-outline' ?>">✅ Selesai</a>
-            <a href="orders.php?status=dibatalkan" class="btn btn-sm <?= $filter==='dibatalkan' ? 'btn-primary' : 'btn-outline' ?>">❌ Dibatalkan</a>
+            <a href="orders.php?status=menunggu" class="btn btn-sm <?= $filter === 'menunggu' ? 'btn-primary' : 'btn-outline' ?>">⏳ Menunggu</a>
+            <a href="orders.php?status=diproses" class="btn btn-sm <?= $filter === 'diproses' ? 'btn-primary' : 'btn-outline' ?>">⚙️ Diproses</a>
+            <a href="orders.php?status=selesai" class="btn btn-sm <?= $filter === 'selesai' ? 'btn-primary' : 'btn-outline' ?>">✅ Selesai</a>
+            <a href="orders.php?status=dibatalkan" class="btn btn-sm <?= $filter === 'dibatalkan' ? 'btn-primary' : 'btn-outline' ?>">❌ Dibatalkan</a>
         </div>
 
         <div class="card">
@@ -112,7 +118,7 @@ $map = [
             </div>
 
             <div class="table-wrapper">
-                <?php if ($orders->num_rows > 0): ?>
+                <?php if ($orders->num_rows > 0) : ?>
                 <table>
                     <thead>
                         <tr>
@@ -129,9 +135,9 @@ $map = [
                     </thead>
                     <tbody>
 
-                    <?php $n = 1; while ($o = $orders->fetch_assoc()):
+                    <?php $n = 1; while ($o = $orders->fetch_assoc()) :
                         [$cls, $icon] = $map[$o['status']] ?? ['badge-info','?'];
-                    ?>
+                        ?>
 
                     <tr>
                         <td><?= $n++ ?></td>
@@ -139,7 +145,7 @@ $map = [
                         <td>
                             <strong><?= htmlspecialchars($o['user_name']) ?></strong>
 
-                            <?php if ($o['user_phone']): ?>
+                            <?php if ($o['user_phone']) : ?>
                                 <br>
                                 <small style="color:#6b7280">
                                     <?= htmlspecialchars($o['user_phone']) ?>
@@ -147,7 +153,7 @@ $map = [
                             <?php endif; ?>
 
                             <!-- ✅ FIX UTAMA DI SINI -->
-                            <?php if (!empty($o['notes'])): ?>
+                            <?php if (!empty($o['notes'])) : ?>
                                 <br>
                                 <small 
                                     style="color:#93c5fd"
@@ -165,8 +171,8 @@ $map = [
                         <td><?= date('d M Y', strtotime($o['order_date'])) ?></td>
 
                         <td>
-                            <?= $o['pickup_date'] 
-                                ? date('d M Y', strtotime($o['pickup_date'])) 
+                            <?= $o['pickup_date']
+                                ? date('d M Y', strtotime($o['pickup_date']))
                                 : '-' ?>
                         </td>
 
@@ -188,10 +194,10 @@ $map = [
                                     <select name="status" class="form-control"
                                         style="padding:.3rem .5rem;font-size:.82rem;min-width:120px">
 
-                                        <option value="menunggu"   <?= $o['status']==='menunggu' ? 'selected':'' ?>>⏳ Menunggu</option>
-                                        <option value="diproses"   <?= $o['status']==='diproses' ? 'selected':'' ?>>⚙️ Diproses</option>
-                                        <option value="selesai"    <?= $o['status']==='selesai' ? 'selected':'' ?>>✅ Selesai</option>
-                                        <option value="dibatalkan" <?= $o['status']==='dibatalkan' ? 'selected':'' ?>>❌ Dibatalkan</option>
+                                        <option value="menunggu"   <?= $o['status'] === 'menunggu' ? 'selected' : '' ?>>⏳ Menunggu</option>
+                                        <option value="diproses"   <?= $o['status'] === 'diproses' ? 'selected' : '' ?>>⚙️ Diproses</option>
+                                        <option value="selesai"    <?= $o['status'] === 'selesai' ? 'selected' : '' ?>>✅ Selesai</option>
+                                        <option value="dibatalkan" <?= $o['status'] === 'dibatalkan' ? 'selected' : '' ?>>❌ Dibatalkan</option>
                                     </select>
 
                                     <button type="submit" class="btn btn-primary btn-sm">💾</button>
@@ -206,14 +212,14 @@ $map = [
                     </tbody>
                 </table>
 
-                <?php else: ?>
+                <?php else : ?>
                 <div class="empty-state">
                     <div class="es-icon">📭</div>
                     <p>
                         Tidak ada pesanan<?= $filter ? ' dengan status <strong>' . htmlspecialchars($filter) . '</strong>' : '' ?>.
                     </p>
 
-                    <?php if ($filter): ?>
+                    <?php if ($filter) : ?>
                     <a href="orders.php" class="btn btn-outline mt-2">Lihat Semua Pesanan</a>
                     <?php endif; ?>
                 </div>

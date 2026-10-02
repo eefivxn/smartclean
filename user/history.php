@@ -9,8 +9,14 @@ $uid = $_SESSION['user_id'];
 
 // Flash messages (dari redirect order_proses.php)
 $success = $error = '';
-if (isset($_SESSION['order_success'])) { $success = $_SESSION['order_success']; unset($_SESSION['order_success']); }
-if (isset($_SESSION['order_error']))   { $error   = $_SESSION['order_error'];   unset($_SESSION['order_error']); }
+if (isset($_SESSION['order_success'])) {
+    $success = $_SESSION['order_success'];
+    unset($_SESSION['order_success']);
+}
+if (isset($_SESSION['order_error'])) {
+    $error   = $_SESSION['order_error'];
+    unset($_SESSION['order_error']);
+}
 
 $stmt = $conn->prepare("
     SELECT o.*, s.name AS service_name
@@ -31,16 +37,16 @@ $stmt->close();
         <p>Semua pesanan yang pernah Anda buat</p>
     </div>
 
-    <?php if ($success): ?>
+    <?php if ($success) : ?>
     <div class="alert alert-success">✅ <?= htmlspecialchars($success) ?></div>
     <?php endif; ?>
-    <?php if ($error): ?>
+    <?php if ($error) : ?>
     <div class="alert alert-danger">⚠️ <?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
     <div class="card">
         <div class="table-wrapper">
-            <?php if ($orders->num_rows > 0): ?>
+            <?php if ($orders->num_rows > 0) : ?>
             <table>
                 <thead>
                     <tr>
@@ -55,7 +61,7 @@ $stmt->close();
                     </tr>
                 </thead>
                 <tbody>
-                <?php $no = 1; while ($o = $orders->fetch_assoc()): ?>
+                <?php $no = 1; while ($o = $orders->fetch_assoc()) : ?>
                     <tr>
                         <td><?= $no++ ?></td>
                         <td><strong><?= htmlspecialchars($o['service_name']) ?></strong></td>
@@ -73,7 +79,7 @@ $stmt->close();
                 <?php endwhile; ?>
                 </tbody>
             </table>
-            <?php else: ?>
+            <?php else : ?>
             <div class="empty-state">
                 <div class="es-icon">📭</div>
                 <p>Belum ada riwayat pesanan.</p>

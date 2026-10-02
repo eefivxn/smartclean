@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once '../config/database.php';
 require_once '../includes/auth.php';
@@ -10,13 +11,15 @@ $allowed_actions = ['add', 'edit', 'delete'];
 // Validasi action sebelum dijalankan
 if (!in_array($action, $allowed_actions)) {
     $_SESSION['svc_error'] = 'Aksi tidak valid.';
-    header('Location: ../admin/services.php'); exit;
+    header('Location: ../admin/services.php');
+    exit;
 }
 
 if ($action === 'add') {
     // Add hanya boleh via POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: ../admin/services.php'); exit;
+        header('Location: ../admin/services.php');
+        exit;
     }
     $name     = trim($_POST['name'] ?? '');
     $desc     = trim($_POST['description'] ?? '');
@@ -25,17 +28,20 @@ if ($action === 'add') {
 
     if (empty($name) || $price <= 0) {
         $_SESSION['svc_error'] = 'Nama dan harga wajib diisi.';
-        header('Location: ../admin/services.php'); exit;
+        header('Location: ../admin/services.php');
+        exit;
     }
 
     if (strlen($name) > 100) {
         $_SESSION['svc_error'] = 'Nama layanan maksimal 100 karakter.';
-        header('Location: ../admin/services.php'); exit;
+        header('Location: ../admin/services.php');
+        exit;
     }
 
     if ($duration < 1 || $duration > 30) {
         $_SESSION['svc_error'] = 'Estimasi hari harus antara 1 sampai 30.';
-        header('Location: ../admin/services.php'); exit;
+        header('Location: ../admin/services.php');
+        exit;
     }
 
     $s = $conn->prepare("INSERT INTO services (name, description, price, duration_days) VALUES (?,?,?,?)");
@@ -46,11 +52,11 @@ if ($action === 'add') {
         $_SESSION['svc_error'] = 'Gagal menambahkan layanan.';
     }
     $s->close();
-
 } elseif ($action === 'edit') {
     // Edit hanya boleh via POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: ../admin/services.php'); exit;
+        header('Location: ../admin/services.php');
+        exit;
     }
 
     $id       = intval($_POST['id'] ?? 0);
@@ -63,12 +69,14 @@ if ($action === 'add') {
 
     if (!$id || empty($name) || $price <= 0) {
         $_SESSION['svc_error'] = 'Data tidak valid.';
-        header('Location: ../admin/services.php'); exit;
+        header('Location: ../admin/services.php');
+        exit;
     }
 
     if ($duration < 1 || $duration > 30) {
         $_SESSION['svc_error'] = 'Estimasi hari harus antara 1 sampai 30.';
-        header('Location: ../admin/services.php'); exit;
+        header('Location: ../admin/services.php');
+        exit;
     }
 
     $s = $conn->prepare("UPDATE services SET name=?, description=?, price=?, duration_days=?, is_active=? WHERE id=?");
@@ -79,12 +87,12 @@ if ($action === 'add') {
         $_SESSION['svc_error'] = 'Gagal memperbarui layanan.';
     }
     $s->close();
-
 } elseif ($action === 'delete') {
     // Hapus hanya boleh via GET dengan id yang valid
     $id = intval($_GET['id'] ?? 0);
     if (!$id) {
-        header('Location: ../admin/services.php'); exit;
+        header('Location: ../admin/services.php');
+        exit;
     }
 
     // Cek layanan masih digunakan pesanan aktif

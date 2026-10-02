@@ -26,7 +26,10 @@ $recent = $conn->query("
 ");
 
 $success = '';
-if (isset($_SESSION['ord_success'])) { $success = $_SESSION['ord_success']; unset($_SESSION['ord_success']); }
+if (isset($_SESSION['ord_success'])) {
+    $success = $_SESSION['ord_success'];
+    unset($_SESSION['ord_success']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -73,7 +76,7 @@ if (isset($_SESSION['ord_success'])) { $success = $_SESSION['ord_success']; unse
             <p>Ringkasan data Smart Clean — <?= date('d F Y') ?></p>
         </div>
 
-        <?php if ($success): ?>
+        <?php if ($success) : ?>
         <div class="alert alert-success">✅ <?= htmlspecialchars($success) ?></div>
         <?php endif; ?>
 
@@ -148,7 +151,7 @@ if (isset($_SESSION['ord_success'])) { $success = $_SESSION['ord_success']; unse
                 <a href="orders.php" class="btn btn-outline btn-sm" style="margin-left:auto">Lihat Semua</a>
             </div>
             <div class="table-wrapper">
-                <?php if ($recent->num_rows > 0): ?>
+                <?php if ($recent->num_rows > 0) : ?>
                 <table>
                     <thead>
                         <tr>
@@ -171,9 +174,9 @@ if (isset($_SESSION['ord_success'])) { $success = $_SESSION['ord_success']; unse
                         'selesai'    => ['badge-success','✅'],
                         'dibatalkan' => ['badge-danger','❌'],
                     ];
-                    while ($o = $recent->fetch_assoc()):
+                    while ($o = $recent->fetch_assoc()) :
                         [$cls, $icon] = $map[$o['status']] ?? ['badge-info','?'];
-                    ?>
+                        ?>
                         <tr>
                             <td><?= $n++ ?></td>
                             <td><strong><?= htmlspecialchars($o['user_name']) ?></strong></td>
@@ -182,7 +185,7 @@ if (isset($_SESSION['ord_success'])) { $success = $_SESSION['ord_success']; unse
                             <td>Rp <?= number_format($o['total_price'], 0, ',', '.') ?></td>
                             <td><?= date('d M Y', strtotime($o['created_at'])) ?></td>
                             <td>
-                                <?php if (isset($o['notes']) && trim($o['notes']) !== ''): ?>
+                                <?php if (isset($o['notes']) && trim($o['notes']) !== '') : ?>
                                     <button 
                                         class="btn btn-sm btn-outline"
                                         data-notes="<?= htmlspecialchars($o['notes'], ENT_QUOTES) ?>"
@@ -190,7 +193,7 @@ if (isset($_SESSION['ord_success'])) { $success = $_SESSION['ord_success']; unse
                                     >
                                         📝 Lihat
                                     </button>
-                                <?php else: ?>
+                                <?php else : ?>
                                     -
                                 <?php endif; ?>
                             </td>
@@ -199,7 +202,7 @@ if (isset($_SESSION['ord_success'])) { $success = $_SESSION['ord_success']; unse
                     <?php endwhile; ?>
                     </tbody>
                 </table>
-                <?php else: ?>
+                <?php else : ?>
                 <div class="empty-state">
                     <div class="es-icon">📭</div>
                     <p>Belum ada pesanan masuk.</p>

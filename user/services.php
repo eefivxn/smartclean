@@ -17,7 +17,7 @@ $i      = 0;
     </div>
 
     <div class="service-grid">
-    <?php while ($s = $result->fetch_assoc()): ?>
+    <?php while ($s = $result->fetch_assoc()) : ?>
         <div class="service-card">
             <div class="service-icon"><?= $icons[$i++ % count($icons)] ?></div>
             <h3><?= htmlspecialchars($s['name']) ?></h3>

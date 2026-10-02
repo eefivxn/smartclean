@@ -7,12 +7,17 @@ include '../includes/header.php';
 
 $services = $conn->query("SELECT * FROM services WHERE is_active = 1 ORDER BY name ASC");
 $services_list = [];
-while ($s = $services->fetch_assoc()) $services_list[] = $s;
+while ($s = $services->fetch_assoc()) {
+    $services_list[] = $s;
+}
 
 $selected_id = intval($_GET['service_id'] ?? 0);
 
 $error = '';
-if (isset($_SESSION['order_error'])) { $error = $_SESSION['order_error']; unset($_SESSION['order_error']); }
+if (isset($_SESSION['order_error'])) {
+    $error = $_SESSION['order_error'];
+    unset($_SESSION['order_error']);
+}
 ?>
 
 <div class="wrapper">
@@ -21,7 +26,7 @@ if (isset($_SESSION['order_error'])) { $error = $_SESSION['order_error']; unset(
         <p>Isi formulir di bawah untuk membuat pesanan baru</p>
     </div>
 
-    <?php if ($error): ?>
+    <?php if ($error) : ?>
     <div class="alert alert-danger">⚠️ <?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
@@ -35,7 +40,7 @@ if (isset($_SESSION['order_error'])) { $error = $_SESSION['order_error']; unset(
                         <label class="form-label">Layanan</label>
                         <select name="service_id" class="form-control" id="serviceSelect" required onchange="updatePrice()">
                             <option value="">-- Pilih Layanan --</option>
-                            <?php foreach ($services_list as $s): ?>
+                            <?php foreach ($services_list as $s) : ?>
                             <option value="<?= $s['id'] ?>"
                                 data-price="<?= $s['price'] ?>"
                                 data-duration="<?= $s['duration_days'] ?>"

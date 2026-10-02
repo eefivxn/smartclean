@@ -1,9 +1,11 @@
 <?php
+
 session_start();
 require_once '../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../register.php'); exit;
+    header('Location: ../register.php');
+    exit;
 }
 
 $name     = trim($_POST['name'] ?? '');
@@ -14,22 +16,26 @@ $confirm  = $_POST['confirm_password'] ?? '';
 
 if (empty($name) || empty($email) || empty($password)) {
     $_SESSION['error'] = 'Semua field wajib diisi.';
-    header('Location: ../register.php'); exit;
+    header('Location: ../register.php');
+    exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION['error'] = 'Format email tidak valid.';
-    header('Location: ../register.php'); exit;
+    header('Location: ../register.php');
+    exit;
 }
 
 if (strlen($password) < 6) {
     $_SESSION['error'] = 'Password minimal 6 karakter.';
-    header('Location: ../register.php'); exit;
+    header('Location: ../register.php');
+    exit;
 }
 
 if ($password !== $confirm) {
     $_SESSION['error'] = 'Konfirmasi password tidak cocok.';
-    header('Location: ../register.php'); exit;
+    header('Location: ../register.php');
+    exit;
 }
 
 $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
@@ -37,7 +43,8 @@ $stmt->bind_param("s", $email);
 $stmt->execute();
 if ($stmt->get_result()->num_rows > 0) {
     $_SESSION['error'] = 'Email sudah terdaftar.';
-    header('Location: ../register.php'); exit;
+    header('Location: ../register.php');
+    exit;
 }
 $stmt->close();
 

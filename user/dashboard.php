@@ -29,8 +29,14 @@ $orders = $recent->get_result();
 $recent->close();
 
 $error = $success = '';
-if (isset($_SESSION['order_error']))   { $error   = $_SESSION['order_error'];   unset($_SESSION['order_error']); }
-if (isset($_SESSION['order_success'])) { $success = $_SESSION['order_success']; unset($_SESSION['order_success']); }
+if (isset($_SESSION['order_error'])) {
+    $error   = $_SESSION['order_error'];
+    unset($_SESSION['order_error']);
+}
+if (isset($_SESSION['order_success'])) {
+    $success = $_SESSION['order_success'];
+    unset($_SESSION['order_success']);
+}
 ?>
 
 <div class="wrapper">
@@ -39,10 +45,10 @@ if (isset($_SESSION['order_success'])) { $success = $_SESSION['order_success']; 
         <p>Selamat datang di Smart Clean — Shinning Clean</p>
     </div>
 
-    <?php if ($error): ?>
+    <?php if ($error) : ?>
     <div class="alert alert-danger">⚠️ <?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
-    <?php if ($success): ?>
+    <?php if ($success) : ?>
     <div class="alert alert-success">✅ <?= htmlspecialchars($success) ?></div>
     <?php endif; ?>
 
@@ -76,7 +82,7 @@ if (isset($_SESSION['order_success'])) { $success = $_SESSION['order_success']; 
             <a href="history.php" class="btn btn-outline btn-sm" style="margin-left:auto">Lihat Semua</a>
         </div>
         <div class="table-wrapper">
-            <?php if ($orders->num_rows > 0): ?>
+            <?php if ($orders->num_rows > 0) : ?>
             <table>
                 <thead>
                     <tr>
@@ -89,7 +95,7 @@ if (isset($_SESSION['order_success'])) { $success = $_SESSION['order_success']; 
                     </tr>
                 </thead>
                 <tbody>
-                <?php $no = 1; while ($o = $orders->fetch_assoc()): ?>
+                <?php $no = 1; while ($o = $orders->fetch_assoc()) : ?>
                     <tr>
                         <td><?= $no++ ?></td>
                         <td><?= htmlspecialchars($o['service_name']) ?></td>
@@ -101,7 +107,7 @@ if (isset($_SESSION['order_success'])) { $success = $_SESSION['order_success']; 
                 <?php endwhile; ?>
                 </tbody>
             </table>
-            <?php else: ?>
+            <?php else : ?>
             <div class="empty-state">
                 <div class="es-icon">📦</div>
                 <p>Belum ada pesanan. <a href="order.php">Buat pesanan sekarang!</a></p>

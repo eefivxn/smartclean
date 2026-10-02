@@ -1,11 +1,13 @@
 <?php
+
 session_start();
 require_once '../config/database.php';
 require_once '../includes/auth.php';
 requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../admin/orders.php'); exit;
+    header('Location: ../admin/orders.php');
+    exit;
 }
 
 $order_id = intval($_POST['order_id'] ?? 0);
@@ -13,7 +15,8 @@ $status   = $_POST['status'] ?? '';
 $allowed  = ['menunggu', 'diproses', 'selesai', 'dibatalkan'];
 
 if (!$order_id || !in_array($status, $allowed)) {
-    header('Location: ../admin/orders.php'); exit;
+    header('Location: ../admin/orders.php');
+    exit;
 }
 
 $stmt = $conn->prepare("UPDATE orders SET status = ? WHERE id = ?");

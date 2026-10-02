@@ -4,8 +4,14 @@ requireAdmin();
 require_once '../config/database.php';
 
 $error = $success = '';
-if (isset($_SESSION['svc_error']))   { $error   = $_SESSION['svc_error'];   unset($_SESSION['svc_error']); }
-if (isset($_SESSION['svc_success'])) { $success = $_SESSION['svc_success']; unset($_SESSION['svc_success']); }
+if (isset($_SESSION['svc_error'])) {
+    $error   = $_SESSION['svc_error'];
+    unset($_SESSION['svc_error']);
+}
+if (isset($_SESSION['svc_success'])) {
+    $success = $_SESSION['svc_success'];
+    unset($_SESSION['svc_success']);
+}
 
 $edit_data = null;
 if (isset($_GET['edit'])) {
@@ -60,10 +66,10 @@ $services = $conn->query("SELECT * FROM services ORDER BY created_at DESC");
             <p>Tambah, edit, dan hapus layanan cuci sepatu</p>
         </div>
 
-        <?php if ($error): ?>
+        <?php if ($error) : ?>
         <div class="alert alert-danger">⚠️ <?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
-        <?php if ($success): ?>
+        <?php if ($success) : ?>
         <div class="alert alert-success">✅ <?= htmlspecialchars($success) ?></div>
         <?php endif; ?>
 
@@ -76,10 +82,10 @@ $services = $conn->query("SELECT * FROM services ORDER BY created_at DESC");
                 </div>
                 <div class="card-body">
                     <form method="POST" action="/smartclean/proses/servis_proses.php">
-                        <?php if ($edit_data): ?>
+                        <?php if ($edit_data) : ?>
                         <input type="hidden" name="action" value="edit">
                         <input type="hidden" name="id" value="<?= $edit_data['id'] ?>">
-                        <?php else: ?>
+                        <?php else : ?>
                         <input type="hidden" name="action" value="add">
                         <?php endif; ?>
 
@@ -106,7 +112,7 @@ $services = $conn->query("SELECT * FROM services ORDER BY created_at DESC");
                                    value="<?= $edit_data['duration_days'] ?? 3 ?>"
                                    min="1" max="30" required>
                         </div>
-                        <?php if ($edit_data): ?>
+                        <?php if ($edit_data) : ?>
                         <div class="form-group">
                             <label class="form-label">Status Layanan</label>
                             <select name="is_active" class="form-control">
@@ -120,7 +126,7 @@ $services = $conn->query("SELECT * FROM services ORDER BY created_at DESC");
                             <button type="submit" class="btn btn-primary">
                                 <?= $edit_data ? '💾 Simpan Perubahan' : '➕ Tambah Layanan' ?>
                             </button>
-                            <?php if ($edit_data): ?>
+                            <?php if ($edit_data) : ?>
                             <a href="services.php" class="btn btn-outline">Batal</a>
                             <?php endif; ?>
                         </div>
@@ -132,7 +138,7 @@ $services = $conn->query("SELECT * FROM services ORDER BY created_at DESC");
             <div class="card">
                 <div class="card-header">📋 Semua Layanan (<?= $services->num_rows ?>)</div>
                 <div class="table-wrapper">
-                    <?php if ($services->num_rows > 0): ?>
+                    <?php if ($services->num_rows > 0) : ?>
                     <table>
                         <thead>
                             <tr>
@@ -145,21 +151,21 @@ $services = $conn->query("SELECT * FROM services ORDER BY created_at DESC");
                             </tr>
                         </thead>
                         <tbody>
-                        <?php $n = 1; while ($s = $services->fetch_assoc()): ?>
+                        <?php $n = 1; while ($s = $services->fetch_assoc()) : ?>
                             <tr>
                                 <td><?= $n++ ?></td>
                                 <td>
                                     <strong><?= htmlspecialchars($s['name']) ?></strong>
-                                    <?php if ($s['description']): ?>
+                                    <?php if ($s['description']) : ?>
                                     <br><small style="color:#6b7280"><?= htmlspecialchars(mb_substr($s['description'], 0, 40)) ?>...</small>
                                     <?php endif; ?>
                                 </td>
                                 <td>Rp <?= number_format($s['price'], 0, ',', '.') ?></td>
                                 <td><?= $s['duration_days'] ?> hari</td>
                                 <td>
-                                    <?php if ($s['is_active']): ?>
+                                    <?php if ($s['is_active']) : ?>
                                     <span class="badge badge-success">✅ Aktif</span>
-                                    <?php else: ?>
+                                    <?php else : ?>
                                     <span class="badge badge-danger">❌ Nonaktif</span>
                                     <?php endif; ?>
                                 </td>
@@ -176,7 +182,7 @@ $services = $conn->query("SELECT * FROM services ORDER BY created_at DESC");
                         <?php endwhile; ?>
                         </tbody>
                     </table>
-                    <?php else: ?>
+                    <?php else : ?>
                     <div class="empty-state">
                         <div class="es-icon">🧹</div>
                         <p>Belum ada layanan. Tambahkan layanan pertama!</p>
