@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="Smartclean">
+    <description>Pemeriksaan gaya penulisan kode PSR-12 untuk Smartclean</description>
+
+    <file>admin</file>
+    <file>user</file>
+    <file>proses</file>
+    <file>includes</file>
+
+    <arg name="extensions" value="php"/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+    <rule ref="PSR12"/>
+</ruleset>

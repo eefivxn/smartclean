@@ -1,0 +1,9 @@
+{
+    "name": "arifin/smartclean",
+    "description": "Aplikasi web cuci sepatu Smartclean",
+    "type": "project",
+    "require-dev": {
+        "phpstan/phpstan": "^2.2",
+        "squizlabs/php_codesniffer": "^4.0"
+    }
+}
